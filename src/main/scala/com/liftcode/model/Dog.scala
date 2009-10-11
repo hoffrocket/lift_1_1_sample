@@ -15,6 +15,7 @@ class Dog extends LongKeyedMapper[Dog] with IdPK {
 
   object name extends MappedPoliteString(this, 128)
   object weight extends MappedInt(this)
+  object owner extends MappedLongForeignKey(this,User)
 }
 
 object Dog extends Dog with LongKeyedMetaMapper[Dog]

@@ -10,6 +10,7 @@ package com.liftcode.snippet
 
 import scala.xml.NodeSeq
 import net.liftweb.util._
+import net.liftweb.mapper._
 
 import model._
 
@@ -17,7 +18,10 @@ class Home {
   def render(in: NodeSeq): NodeSeq = User.currentUser match {
     case Full(user) =>  <p>Thanks again for logging in.</p>
 
-    case _ => <lift:embed what="/templates-hidden/welcome"/>
+    case _ => {
+        val dogs = Dog.findAll(By(Dog.name,"fido"),OrderBy(Dog.name,Ascending),PreCache(Dog.owner))
+        <ul>{dogs.flatMap(d => <li>{d.name.is}</li>)}</ul>
+    }
   }
 
 }

@@ -8,8 +8,7 @@ import Helpers._
 import _root_.net.liftweb.mapper.{DB, ConnectionManager, Schemifier, DefaultConnectionIdentifier, ConnectionIdentifier}
 import _root_.java.sql.{Connection, DriverManager}
 import _root_.com.liftcode.model._
-import _root_.javax.servlet.http.{HttpServletRequest}
-
+import _root_.net.liftweb.http.provider._
 /**
   * A class that's instantiated early and run.  It allows the application
   * to modify lift's environment
@@ -21,7 +20,7 @@ class Boot {
 
     // where to search snippet
     LiftRules.addToPackages("com.liftcode")
-    Schemifier.schemify(true, Log.infoF _, User)
+    Schemifier.schemify(true, Log.infoF _, User, Dog)
 
     // Build SiteMap
     val entries = Menu(Loc("Home", List("index"), "Home")) :: User.sitemap
@@ -49,9 +48,9 @@ class Boot {
   /**
    * Force the request to be UTF-8
    */
-  private def makeUtf8(req: HttpServletRequest) {
-    req.setCharacterEncoding("UTF-8")
-  }
+   private def makeUtf8(req: HTTPRequest) {
+     req.setCharacterEncoding("UTF-8")
+   }
 
 }
 
@@ -65,10 +64,10 @@ object DBVendor extends ConnectionManager {
 
   private def createOne: Box[Connection] = try {
     val driverName: String = Props.get("db.driver") openOr
-    "org.apache.derby.jdbc.EmbeddedDriver"
+    "org.h2.Driver"
 
     val dbUrl: String = Props.get("db.url") openOr
-    "jdbc:derby:lift_example;create=true"
+    "jdbc:h2:mem:lift;DB_CLOSE_DELAY=-1"
 
     Class.forName(driverName)
 
