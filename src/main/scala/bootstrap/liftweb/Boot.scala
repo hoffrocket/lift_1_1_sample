@@ -9,6 +9,7 @@ import _root_.net.liftweb.mapper.{DB, ConnectionManager, Schemifier, DefaultConn
 import _root_.java.sql.{Connection, DriverManager}
 import _root_.com.liftcode.model._
 import _root_.net.liftweb.http.provider._
+import _root_.net.liftweb.common._
 /**
   * A class that's instantiated early and run.  It allows the application
   * to modify lift's environment
